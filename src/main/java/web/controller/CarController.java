@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import web.model.Car;
 import web.service.CarService;
 
 
@@ -11,19 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class Car {
+public class CarController {
 
-    @GetMapping(value = "/cars")
-    public String printCar(ModelMap model, @RequestParam(value = "count", required = false) int count) {
+    @GetMapping("cars")
+    public String printCar(ModelMap model, @RequestParam(value = "count", required = false, defaultValue = "5") int count) {
         CarService carService = new CarService();
-        List<String> cars = new ArrayList<>();
-        cars.add("BMW");
-        cars.add("Audi");
-        cars.add("Mercedes");
-        cars.add("Opel");
-        cars.add("Ford");
+        List<String> cars = carService.getCars(carService.listOfFiveCars(), count);
 
-        model.addAttribute("cars", carService.getCars(cars, count));
+        model.addAttribute("cars", cars);
 
         return "cars";
     }
